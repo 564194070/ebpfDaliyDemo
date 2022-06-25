@@ -35,4 +35,15 @@ eBPF工作:
 1.HOOK时间触发后执行(系统调用、内核跟踪点、内核函数、用户态函数、网路事件)
 2.插桩内核态(kprobe)；插桩用户态(uprobe)
 
+# 01.安装工具及测试程序编写
+安装工具:
+1.将eBPF程序编译成字节码的LLVM
+2.C语言编译工具make
+3.eBPF工具集和BCC和它依赖的头文件
+4.内核代码仓库实时同步的libbpf
+5.内核代码提供的eBPF管理工具bpftool
+命令：sudo apt-get install -y  make clang llvm libelf-dev libbpf-dev bpfcc-tools libbpfcc-dev linux-tools-$(uname -r) linux-headers-$(uname -r)
+
+测试程序，测试netfilter中iptable中OUTPUT的HOOK点
+
 
