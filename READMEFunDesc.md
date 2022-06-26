@@ -28,7 +28,14 @@ bpftool:查看eBPF程序的运行状态
 bpftool prog list：查询系统中正在运行的eBPF程序(编号，类型，名称)
 bpftool prog dump xlated id eBPF编号:查看指令(BPF指令行数，BPF指令码，BPF指令伪代码)
 bpftool prog dump jited id 89:BPF指令到内核后，即时编译器生成本地机器指令，执行。
-bpftool feature probe 查询当前系统支持的辅助函数列表
+bpftool feature probe:查询当前系统支持的辅助函数列表
+bpftool map：查询系统中所有的映射
+bpftool map create /sys/fs/bpf/stats_map type hash key 2 value 2 entries 8 name statusMap:挂Map(KV都是2字节)8元素叫statsMap
+bpftool map update name statsMap key 0xc1 0xc2 value 0xa1 0xa2：向哈希表中插入数据
+bpftool map dump name statsMap：查询数据表中的所有数据i
+bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h：方便bpf_probe_read时，提取到正确的数据类型
+rm /sys/fs/bpf/statsMap：删除哈希映射表
+bpftool map dump id diname
 
 
 strace -v -f -ebpf ./x.py：查看给bpf函数传入的参数
@@ -41,5 +48,5 @@ strace -v -f -ebpf ./x.py：查看给bpf函数传入的参数
 
 
 kernel
-include/uapi/linux/bpf.h bpf_cmd 内核已经支持的BPF命令，辅助函数，
-
+include/uapi/linux/bpf.h bpf_cmd 内核已经支持的BPF命令，辅助函数，映射类型
+vmlinux.h 获取内核数据结构定义，避免找不到头文件和数据结构
