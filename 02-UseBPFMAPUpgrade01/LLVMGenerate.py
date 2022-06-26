@@ -10,7 +10,7 @@ print("%-18s %-16s %-6s %-16s" % ("TIME(s)", "COMM", "PID","Called"))
 
 # 回调之后要对数据进行处理，打印性能事件提供的数据
 start = 0
-def print_event(cpu, data, size):
+def printEvent(cpu, data, size):
     global start
     event = b["events"].event(data)
     if start == 0:
@@ -19,7 +19,7 @@ def print_event(cpu, data, size):
     print("%-18.9f %-16s %-6d %-16s" % (time_s, event.comm, event.pid, event.name))
 
 # eventsd的事件映射到这里，通过循环读取映射的内容，执行回调(print_event)输出内容
-b["events"].open_perf_buffer(print_event)
+b["events"].open_perf_buffer(printEvent)
 while 1:
     try:
         b.perf_buffer_poll()
