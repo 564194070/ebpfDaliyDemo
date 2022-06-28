@@ -105,3 +105,9 @@ eBPF工作:
 	2.bpftrace查询 构建了简化跟踪语言 .bt可使用
 		1.查询搜友内核插装和跟踪点 boftrace -l  bpftrace -l "*execve*"
 		2.查询入口参数和返回值格式 bpftrace -lv tracepoint:syscalls:sys_enter(exit)_execve
+
+# 07.如何开发一个解决短时进程的监控程序
+1.开发eBPF程序的方式：
+	1.bpftrace：快速排查和定位系统，单行脚本快速开发排查。不支持复杂程序依赖BCC和LLVM
+	2.BCC 开发复杂eBPF程序中，内置工具多。依赖LLVM和内核头文件才可以动态编译加载
+	3.libbpf从内核中抽离标准库，开发的eBPF程序可以直接分发执行，不需要机器安装LLVM和内核头文件。 但是要系统开启BTF特性。
