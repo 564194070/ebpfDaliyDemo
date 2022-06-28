@@ -36,7 +36,8 @@ fn = b.load_func("xdp-example", BPF.XDP) 编译XDP程序
 device = "eth0"
 b.attach_xdp(device, fn, 0) 加载程序到网卡
 b.remove_xdp(device) 卸载程序
-
+b.attach_uretprobe() 挂载用户态程序
+b.attach_uretprobe(name="/usr/bin/bash", sym="readline", fn_name="bash_readline")
 
 sudo tc qdisc add dev eth0 clsact 创建 clsact 类型的排队规则
 sudo tc filter add dev eth0 ingress bpf da obj tc-example.o sec ingress 加载接收方向的 eBPF 程序

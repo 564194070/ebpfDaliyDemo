@@ -111,3 +111,17 @@ eBPF工作:
 	1.bpftrace：快速排查和定位系统，单行脚本快速开发排查。不支持复杂程序依赖BCC和LLVM
 	2.BCC 开发复杂eBPF程序中，内置工具多。依赖LLVM和内核头文件才可以动态编译加载
 	3.libbpf从内核中抽离标准库，开发的eBPF程序可以直接分发执行，不需要机器安装LLVM和内核头文件。 但是要系统开启BTF特性。
+
+# 08.使用eBPF监控用户态进程
+1.方法
+	1.把内核态跟踪使用的kprobe和tracepoint替换成uprobe,或者用户空间定义的静态跟踪点(USTD)
+	2.-g + 调试信息 readelf/objdump,nm 
+	3.readelf -Ws /usr/lib/x86_64-linux-gnv/lib.so.6 readelf -n /usr/lib/x86_64-linux-gnu/libc.so.6
+	4.bpftrace bpftrace -l 'uprobe:/usr/lib/x86_64-linux-gnu/libc.so.6:*' bpftrace -l 'usdt:/usr/lib/x86_64-linux-gnu/libc.so.6:*'
+	5.插桩基于文件，不过滤进程PID之前，默认所有用到的函数都要插桩
+	6.编译形语言可以，解释性要追踪解析器函数，即时编译型语言超级难
+2.过程：
+	1.sudo apt install bash-dbgsym 安装调试信息
+	2.readelf -n /usr/bin/bash | grep 'Build ID' 查ID
+	3.ls /usr/lib/debug/.build-id/7b/140b33fd79d0861f831bae38a0cdfdf639d8bc.debug 找到对应的文件
+	4.readelf -Ws /usr/lib/debug/.build-id/7b/140b33fd79d0861f831bae38a0cdfdf639d8bc.debug 查符号表	
