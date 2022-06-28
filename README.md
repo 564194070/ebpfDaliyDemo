@@ -98,3 +98,10 @@ eBPF工作:
 		2.网络，网络数据包过滤和处理，管理数据包收发过程，网络观测，过滤，性能优化
 		3.安全控制，BPF拓展。
 		4.eBPF程序可以通过BPF映射互相配合
+
+# 06.关于查询内核中的跟踪点
+1.查询跟踪点
+	1.内核查询 cat /proc/kallsyms | wc -l 不建议使用 /sys/kernel/debug/
+	2.bpftrace查询 构建了简化跟踪语言 .bt可使用
+		1.查询搜友内核插装和跟踪点 boftrace -l  bpftrace -l "*execve*"
+		2.查询入口参数和返回值格式 bpftrace -lv tracepoint:syscalls:sys_enter(exit)_execve
